@@ -12,24 +12,31 @@ class Index extends Rest
 {
     public function index()
     {
-        $se = Session::get("name");
-        if($se == null) {
-            Cookie::set("name",1);
+        $se_user = Session::get("user");
+        $se_pwd = Session::get('pwd');
+
+        if( $se_user != null && $se_pwd != null ) {
+            $user = $se_user;
+            $pwd = $se_pwd;
         }
         else {
-            print "se ".$se.'</br>';
-            Session::set("name",$se+1);
+            $user = Request::instance()->param('username');
+            $pwd = Request::instance()->param('password');
         }
 
-        $user = Request::instance()->param('username');
-        $pwd = Request::instance()->param('password');
-        print $user;
-        print $pwd;
+        if( $user == null || $pwd == null ) {
+            $view = new View();
+            return $view->fetch('login/login');
+        }
+
         $data = ['cmd_id'=>1,'cmd_flag'=>1024,'cmd_data'=>['user'=>$user,'pwd'=>$pwd]];
         $array =  $this->postData("http://192.9.60.58:8888/".json_encode($data) ) ;
         if( $array != null ){
             $retData = json_decode($array, true);
             if( $retData && $retData['retCode'] == 0 ) {
+                Session::set('user', $user);
+                Session::set('pwd',$pwd);
+
                 $view = new View();
 
                 return $view->fetch('index');

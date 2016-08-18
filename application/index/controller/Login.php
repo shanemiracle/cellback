@@ -11,11 +11,15 @@ namespace app\index\controller;
 
 use think\controller\Rest;
 use think\Request;
+use think\Session;
 use think\View;
 
 class Login extends Rest
 {
     public function index() {
+
+        Session::delete('user');
+        Session::delete('pwd');
 
         return (new View())->fetch('login');
     }
