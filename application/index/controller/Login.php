@@ -10,7 +10,6 @@ namespace app\index\controller;
 
 
 use think\controller\Rest;
-use think\Request;
 use think\Session;
 use think\View;
 
