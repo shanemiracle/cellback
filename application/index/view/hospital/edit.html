@@ -31,11 +31,11 @@
 </head>
 <body>
 <div class="page-container">
-	<form class="form form-horizontal" id="form-hospital-add" action="/hospital/add_one">
+	<form class="form form-horizontal" id="form-hospital-add" action="/hospital/edit_one">
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>医院编码：</label>
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>医院编号：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="id_hos_num" name="hospital_number">
+				<input type="text" class="input-text" value={$hos_no} placeholder="" id="id_hos_no" name="hospital_number">
 			</div>
 		</div>
 
@@ -82,8 +82,7 @@
 
 $(function () {
 		$('#id_hos_add').on('click',function () {
-		$.post('/hospital/add_one',{'zone':$('#id_zone').val(),'hospital_name':$('#id_hos_name').val(),
-					'hospital_number':$('#id_hos_num').val()},
+		$.post('/hospital/edit_one',{'zone':$('#id_zone').val(),'hospital_name':$('#id_hos_name').val()},
 				function(data) {
 //						alert(data);
 					layer_close();

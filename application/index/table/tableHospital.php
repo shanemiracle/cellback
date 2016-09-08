@@ -44,4 +44,10 @@ class tableHospital
         return $data;
     }
 
+    public static function search_hos($hos_name) {
+        $data = Db::table(tableHospital::$tableName)->where('hospital_name','like', '%'.$hos_name.'%')->select();
+
+        return $data;
+    }
+
 }
