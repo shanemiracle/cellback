@@ -109,7 +109,7 @@ $(document).ready(function () {
 	});
 
 	$('#btnSubmit').on('click',function () {
-		alert('click');
+//		alert('click');
 		$.post('/hospital/add_one',{'zone':$('#hos_zone').val(),'hospital_name':$('#hos_name').val(),
 					'hospital_number':$('#hos_num').val()},
 				function(data) {
