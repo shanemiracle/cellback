@@ -37,6 +37,23 @@ class Hospital extends Rest
         return (new View())->fetch('hospital/index',$page);
     }
 
+    public function ajax_index() {
+        $data = tableHospital::getList(0,100);
+        if( $data == null ) {
+            $page = [
+                'page_num'=>0,
+                'page_data'=>$data
+            ];
+        }
+        else {
+            $page = [
+                'page_num'=>count($data),
+                'page_data'=>$data
+            ];
+        }
+
+        return $this->response(['data'=>$data],'json',200);
+    }
 
     public function add() {
 
@@ -63,17 +80,36 @@ class Hospital extends Rest
         if ($ret != null) {
             $retData = json_decode($ret, true);
             if ($retData && $retData['retCode'] == 0) {
-                print 'ok';
+                print 0;
             }
             else{
                 print 'err1'.$retData['retCode'];
             }
 
         } else {
-            print 'error';
+            print 10000;
         }
+    }
 
+    public function hos_exist() {
+        $hos_number = Request::instance()->param('hospital_number');
 
+        $data = ['cmd_id' => 4, 'cmd_flag' => 0, 'cmd_data' => ['attest'=>Session::get("attest"),
+            'hospital_number'=>$hos_number]];
+        $ret = Cellserver::postData(json_encode($data));
+
+        if ($ret != null) {
+            $retData = json_decode($ret, true);
+            if ($retData && $retData['retCode'] == 0) {
+                print 1;
+            }
+            else if ($retData && $retData['retCode'] == 0x27) {
+                print 0;
+            }
+
+        } else {
+            print 2;
+        }
     }
 
     public function search_hos(){

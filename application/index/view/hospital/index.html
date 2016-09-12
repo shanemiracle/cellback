@@ -1,181 +1,157 @@
-﻿<!DOCTYPE HTML>
-<html>
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="renderer" content="webkit|ie-comp|ie-stand">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-<!--[if lt IE 9]>
-<script type="text/javascript" src="lib/html5.js"></script>
-<script type="text/javascript" src="lib/respond.min.js"></script>
-<script type="text/javascript" src="lib/PIE_IE678.js"></script>
-<![endif]-->
-<link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
-<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
-<link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.7/iconfont.css" />
-<link rel="stylesheet" type="text/css" href="../lib/icheck/icheck.css" />
-<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
-<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
+	<meta charset="UTF-8">
+	<title>医院列表</title>
+	<link rel="stylesheet" type="text/css" href="/DataTables-1.10.12/media/css/jquery.dataTables.css">
 
-<!--[if IE 6]>
-<script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
-<script>DD_belatedPNG.fix('*');</script>
-<![endif]-->
-<title>医院列表</title>
+	<link rel="stylesheet" type="text/css" href="/static/h-ui/css/H-ui.min.css" />
+	<link rel="stylesheet" type="text/css" href="/static/h-ui.admin/css/H-ui.admin.css" />
+	<link rel="stylesheet" type="text/css" href="/lib/Hui-iconfont/1.0.7/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="/lib/icheck/icheck.css" />
+	<link rel="stylesheet" type="text/css" href="/static/h-ui.admin/skin/default/skin.css" id="skin" />
+	<link rel="stylesheet" type="text/css" href="/static/h-ui.admin/css/style.css" />
+
+	<!-- jQuery -->
+	<script type="text/javascript" charset="utf8" src="/DataTables-1.10.12/media/js/jquery.js"></script>
+
+	<!-- DataTables -->
+	<script type="text/javascript" charset="utf8" src="/DataTables-1.10.12/media/js/jquery.dataTables.js"></script>
+	<script type="text/javascript" charset="utf8" src="/lib/layer/2.1/layer.js"></script>
 </head>
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 医院管理 <span class="c-gray en">&gt;</span> 医院列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;" onclick="member_add('添加医院','hospital/add','','510')" end="javascript:location.replace(location.href);" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加医院</a></span> <span class="r">共有数据：<strong>{$page_num}</strong> 条</span> </div>
-	<div class="mt-20">
-		<table id= "hos_table" class="table table-border table-bordered table-bg table-hover table-sort">
-			<thead>
-				<tr class="text-c">
-					<th><input type="checkbox" value="" name=""></th>
-					<th width="80">ID</th>
-					<th>医院名</th>
-					<th width="80">地区</th>
-					<th width="80">编号</th>
-					<th width="120">创建时间</th>
-					<th width="120">操作</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php for($i=$page_num-1; $i >= 0 ;$i--) {?>
-					<tr class="text-c">
-						<td><input type="checkbox" value="" name=""></td>
-						<td>{$page_data[$i]['hospital_no']}</td>
-						<td>{$page_data[$i]['hospital_name']}</td>
-						<td>{$page_data[$i]['zone']}</td>
-						<td>{$page_data[$i]['hospital_number']}</td>
-						<td>{$page_data[$i]['create_time']}</td>
-						<td class="f-14 td-manage"> <a style="text-decoration:none" class="ml-5" onClick="hos_edit('医院编辑','/hospital/edit',{$page_data[$i]['hospital_no']})" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> </td>
-					</tr>
+	<!--<div class="cl pd-5 bg-1 bk-gray mt-20">-->
+		<!--<span class="l"> <a onclick="javascript:DelRow()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加医院</a></span>-->
+		<!--<span class="r">共有数据：<strong>{$page_num}</strong> 条</span> -->
+	<!--</div>-->
+	<!---->
+	<!--<div>-->
+		<!--<a-->
+	<!--</div>-->
 
-				<?php } ?>
+	<div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="l">
+			<i class="Hui-iconfont">&#xe600;</i>
+			<input type="button" id="btnAdd" value="添加医院" class="btn btn-primary radius ">
+			&nbsp;
+			<i class="Hui-iconfont">&#xe6a1;</i>
+			<input type="button" id="btnDel" value="删除医院" class="btn btn-primary radius" >
+		</span>
 
-			</tbody>
-		</table>
+		<span class="r">共有数据：<strong>{$page_num}</strong> 条</span>
 	</div>
+
+	<table id="table_id_example" class="display" class="text-c">
+	<thead>
+	<tr>
+		<th>hospital_no</th>
+		<th>hospital_ver</th>
+		<th>zone</th>
+		<th>hospital_name</th>
+		<th>hospital_number</th>
+		<th>create_time</th>
+	</tr>
+	</thead>
+	<tbody >
+
+	<!--<td>Data 11</td>-->
+	<!--<td>Data 12</td>-->
+	<!--</tr>-->
+	<!--<tr>-->
+	<!--<td>Data 21</td>-->
+	<!--<td>Data 22</td>-->
+
+	</tbody>
+</table>
+
+
 </div>
-<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
-<script type="text/javascript" src="lib/layer/2.1/layer.js"></script>
-<script type="text/javascript" src="lib/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="static/h-ui/js/H-ui.js"></script>
-<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
-<script type="text/javascript">
-$(document).ready(function () {
-	$('#hos_table').dataTable({
-		"aaSorting": [[ 1, "desc" ]],//默认第几个排序
-		"bStateSave": true,//状态保存
-		"aoColumnDefs": [
-			//{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
-			{"orderable":false,"aTargets":[0,6]}// 不参与排序的列
-		]
-	});
-
-});
-
-
-function member_add(title,url,w,h){
-//	var la1= layer_show(title,url,w,h);
-	layer.open({
-		type:2,
-		title:title,
-		area:['800px','600px'],
-		content:url,
-		end:function () {
-			location.replace(location.href);
-		}
-	});
-}
-
-
-function hos_edit(title,url,hos){
-//	var la1= layer_show(title,url,w,h);
-	layer.open({
-		type:2,
-		title:title,
-		area:['800px','600px'],
-		content:url,
-		end:function () {
-			location.replace(location.href);
-		}
-	});
-}
-/*资讯-添加*/
-function article_add(title,url,w,h){
-	var index = layer.open({
-		type: 2,
-		title: title,
-		content: url
-	});
-	layer.full(index);
-}
-/*资讯-编辑*/
-function article_edit(title,url,id,w,h){
-	var index = layer.open({
-		type: 2,
-		title: title,
-		content: url
-	});
-	layer.full(index);
-}
-/*资讯-删除*/
-function article_del(obj,id){
-	layer.confirm('确认要删除吗？',function(index){
-		$(obj).parents("tr").remove();
-		layer.msg('已删除!',1);
-	});
-}
-/*资讯-审核*/
-function article_shenhe(obj,id){
-	layer.confirm('审核文章？', {
-		btn: ['通过','不通过','取消'], 
-		shade: false,
-		closeBtn: 0
-	},
-	function(){
-		$(obj).parents("tr").find(".td-manage").prepend('<a class="c-primary" onClick="article_start(this,id)" href="javascript:;" title="申请上线">申请上线</a>');
-		$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
-		$(obj).remove();
-		layer.msg('已发布', {icon:6,time:1000});
-	},
-	function(){
-		$(obj).parents("tr").find(".td-manage").prepend('<a class="c-primary" onClick="article_shenqing(this,id)" href="javascript:;" title="申请上线">申请上线</a>');
-		$(obj).parents("tr").find(".td-status").html('<span class="label label-danger radius">未通过</span>');
-		$(obj).remove();
-    	layer.msg('未通过', {icon:5,time:1000});
-	});	
-}
-/*资讯-下架*/
-function article_stop(obj,id){
-	layer.confirm('确认要下架吗？',function(index){
-		$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="article_start(this,id)" href="javascript:;" title="发布"><i class="Hui-iconfont">&#xe603;</i></a>');
-		$(obj).parents("tr").find(".td-status").html('<span class="label label-defaunt radius">已下架</span>');
-		$(obj).remove();
-		layer.msg('已下架!',{icon: 5,time:1000});
-	});
-}
-
-/*资讯-发布*/
-function article_start(obj,id){
-	layer.confirm('确认要发布吗？',function(index){
-		$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="article_stop(this,id)" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a>');
-		$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
-		$(obj).remove();
-		layer.msg('已发布!',{icon: 6,time:1000});
-	});
-}
-/*资讯-申请上线*/
-function article_shenqing(obj,id){
-	$(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">待审核</span>');
-	$(obj).parents("tr").find(".td-manage").html("");
-	layer.msg('已提交申请，耐心等待审核!', {icon: 1,time:2000});
-}
-
-</script> 
 </body>
+
+<script>
+
+	var table;
+	$(document).ready( function () {
+		table = $('#table_id_example').DataTable({
+//            data: data,
+			//使用对象数组，一定要配置columns，告诉 DataTables 每列对应的属性
+			//data 这里是固定不变的，name，position，salary，office 为你数据里对应的属性
+			ajax:"http://localhost:8888/hospital/ajax_index",
+			aaSorting: [[ 0, "desc" ]],
+			columns: [
+				{ data: 'hospital_no' },
+				{ data: 'hospital_ver' },
+				{ data: 'zone' },
+				{ data: 'hospital_name' },
+				{ data: 'hospital_number' },
+				{ data: 'create_time' }
+			],
+			language: {
+				'emptyTable': '没有数据',
+				'loadingRecords': '加载中...',
+				'processing': '查询中...',
+				'search': '检索:',
+				'lengthMenu': '每页 _MENU_ 件',
+				'zeroRecords': '没有数据',
+				'paginate': {
+					'first':      '第一页',
+					'last':       '最后一页',
+					'next':       '后一页',
+					'previous':   '前一页'
+				},
+				'info': '第 _PAGE_ 页 / 总 _PAGES_ 页',
+				'infoEmpty': '没有数据',
+				'infoFiltered': '(过滤总件数 _MAX_ 条)'
+			}
+		});
+
+		$('#table_id_example tbody').on( 'click', 'tr', function () {
+			$(this).toggleClass('selected');
+		} );
+
+		$('#btnDel').on('click',delRow);
+
+
+		$('#btnAdd').on('click',addRow);
+
+		function delRow() {
+			var rows = table
+					.rows('.selected')
+					.remove()
+					.draw();
+		}
+
+		function addRow() {
+//            table.ajax.reload();
+//            table.row.add( {
+//                "name":       "xiao",
+//                "position":   "Hangzhou",
+//                "salary":     "$3,120",
+//                "start_date": "2016/04/25",
+//                "office":     "soyea",
+//                "extn":       "5421"
+//            } ).draw();
+//            alert("add");
+//            var rows = table
+//                    .rows('.selected')
+//                    .remove()
+//                    .draw();
+			var count = 1;
+//            table.ajax.reload();
+			layer.open({
+				type:2,
+				title:'添加医院',
+				area:['800px','300px'],
+				content:'hospital/add',
+				end:function () {
+					table.ajax.reload();
+				}
+			});
+		}
+
+	} );
+</script>
+
 </html>

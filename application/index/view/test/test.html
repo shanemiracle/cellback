@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+    <link rel="stylesheet" type="text/css" href="/DataTables-1.10.12/media/css/jquery.dataTables.css">
+
+    <!-- jQuery -->
+    <script type="text/javascript" charset="utf8" src="/DataTables-1.10.12/media/js/jquery.js"></script>
+
+    <!-- DataTables -->
+    <script type="text/javascript" charset="utf8" src="/DataTables-1.10.12/media/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8" src="/lib/layer/2.1/layer.js"></script>
+</head>
+<body>
+    <table id="table_id_example" class="display">
+        <thead>
+            <tr>
+                <th>hospital_no</th>
+                <th>hospital_ver</th>
+                <th>zone</th>
+                <th>hospital_name</th>
+                <th>hospital_number</th>
+                <th>create_time</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!--<tr>-->
+                <!--<td>Data 11</td>-->
+                <!--<td>Data 12</td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+                <!--<td>Data 21</td>-->
+                <!--<td>Data 22</td>-->
+            <!--</tr>-->
+        </tbody>
+    </table>
+
+    <div>
+        <input type="button" id="btnDel" value="删除所选按钮">
+
+    </div>
+    <div>
+        <input type="button" id="btn" value="按钮">
+
+    </div>
+</body>
+
+<script>
+
+    var table;
+    $(document).ready( function () {
+        table = $('#table_id_example').DataTable({
+//            data: data,
+            //使用对象数组，一定要配置columns，告诉 DataTables 每列对应的属性
+            //data 这里是固定不变的，name，position，salary，office 为你数据里对应的属性
+            ajax:"http://localhost:8888/hospital/ajax_index",
+            aaSorting: [[ 0, "desc" ]],
+            columns: [
+                { data: 'hospital_no' },
+                { data: 'hospital_ver' },
+                { data: 'zone' },
+                { data: 'hospital_name' },
+                { data: 'hospital_number' },
+                { data: 'create_time' }
+            ],
+            language: {
+                'emptyTable': '没有数据',
+                'loadingRecords': '加载中...',
+                'processing': '查询中...',
+                'search': '检索:',
+                'lengthMenu': '每页 _MENU_ 件',
+                'zeroRecords': '没有数据',
+                'paginate': {
+                    'first':      '第一页',
+                    'last':       '最后一页',
+                    'next':       '',
+                    'previous':   ''
+                },
+                'info': '第 _PAGE_ 页 / 总 _PAGES_ 页',
+                'infoEmpty': '没有数据',
+                'infoFiltered': '(过滤总件数 _MAX_ 条)'
+            }
+        });
+
+        $('#table_id_example tbody').on( 'click', 'tr', function () {
+            $(this).toggleClass('selected');
+        } );
+
+        $('#btnDel').on('click',DelRow);
+
+
+        $('#btn').on('click',addRow);
+
+        function DelRow() {
+            var rows = table
+                    .rows('.selected')
+                    .remove()
+                    .draw();
+        }
+
+        function addRow() {
+//            table.ajax.reload();
+//            table.row.add( {
+//                "name":       "xiao",
+//                "position":   "Hangzhou",
+//                "salary":     "$3,120",
+//                "start_date": "2016/04/25",
+//                "office":     "soyea",
+//                "extn":       "5421"
+//            } ).draw();
+//            alert("btn");
+//            var rows = table
+//                    .rows('.selected')
+//                    .remove()
+//                    .draw();
+            var count = 1;
+//            table.ajax.reload();
+            layer.open({
+                content:'hello test',
+                end:function () {
+                    table.ajax.reload();
+//                    table.ajax.refresh();
+//                    table.row.add( {
+//                        'hospital_no':count,
+//                        'hospital_ver':1,
+//                        'zone': 'hangzhou',
+//                        'hospital_name':'hos'+count,
+//                        'hospital_number' :count,
+//                        'create_time':Date.now()
+//            } ).draw();
+                }
+            });
+        }
+
+    } );
+</script>
+
+</html>

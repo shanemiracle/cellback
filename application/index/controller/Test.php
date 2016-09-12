@@ -13,6 +13,7 @@ use app\index\cell\Cellserver;
 use app\index\table\tableHospital;
 use think\controller\Rest;
 use think\Session;
+use think\View;
 
 class Test extends Rest
 {
@@ -23,5 +24,9 @@ class Test extends Rest
         $ret = Cellserver::postData(json_encode($data));
 
         return $this->response($ret,'html',200);
+    }
+
+    public function test() {
+        return (new View())->fetch('test');
     }
 }
