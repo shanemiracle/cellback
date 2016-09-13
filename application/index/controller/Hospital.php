@@ -20,25 +20,33 @@ use think\View;
 class Hospital extends Rest
 {
     public function index() {
-        $data = tableHospital::getList(0,100);
+        $data = tableHospital::count();
         if( $data == null ) {
             $page = [
                 'page_num'=>0,
-                'page_data'=>$data
             ];
         }
         else {
             $page = [
-                'page_num'=>count($data),
-                'page_data'=>$data
+                'page_num'=>$data,
             ];
         }
 
         return (new View())->fetch('hospital/index',$page);
     }
 
+    public function ajax_count() {
+        $data = tableHospital::count();
+        if( $data == null ) {
+            print 0;
+        }
+        else {
+            print $data;
+        }
+    }
+
     public function ajax_index() {
-        $data = tableHospital::getList(0,100);
+        $data = tableHospital::getList(0,50000);
         if( $data == null ) {
             $page = [
                 'page_num'=>0,
@@ -62,8 +70,11 @@ class Hospital extends Rest
     }
 
     public function edit() {
-
-        return (new View())->fetch('hospital/edit');
+        $hos_no = Request::instance()->param('hos_no');
+        $hos_num = Request::instance()->param('hos_num');
+        $hos_name = Request::instance()->param('hos_name');
+        $hos_zone = Request::instance()->param('hos_zone');
+        return (new View())->fetch('hospital/edit',['hos_no'=>$hos_no,'hos_num'=>$hos_num,'hos_name'=>$hos_name,'hos_zone'=>$hos_zone]);
 
     }
 
@@ -84,6 +95,30 @@ class Hospital extends Rest
             }
             else{
                 print 'err1'.$retData['retCode'];
+            }
+
+        } else {
+            print 10000;
+        }
+    }
+
+    public function edit_one() {
+        $hos_no = Request::instance()->param('hos_no');
+        $hos_name = Request::instance()->param('hos_name');
+        $zone = Request::instance()->param('hos_zone');
+
+
+        $data = ['cmd_id' => 3, 'cmd_flag' => 0, 'cmd_data' => ['attest'=>Session::get("attest"),
+            'zone' => $zone, 'hospital_name' => $hos_name,'hospital_no'=>intval($hos_no) ]];
+        $ret = Cellserver::postData(json_encode($data));
+
+        if ($ret != null) {
+            $retData = json_decode($ret, true);
+            if ($retData && $retData['retCode'] == 0) {
+                print 0;
+            }
+            else{
+                print 'err'.$retData['retCode'];
             }
 
         } else {

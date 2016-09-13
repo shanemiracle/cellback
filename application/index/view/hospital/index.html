@@ -35,12 +35,9 @@
 		<span class="l">
 			<i class="Hui-iconfont">&#xe600;</i>
 			<input type="button" id="btnAdd" value="添加医院" class="btn btn-primary radius ">
-			&nbsp;
-			<i class="Hui-iconfont">&#xe6a1;</i>
-			<input type="button" id="btnDel" value="删除医院" class="btn btn-primary radius" >
 		</span>
 
-		<span class="r">共有数据：<strong>{$page_num}</strong> 条</span>
+		<span class="r">共有数据：<strong><span id="hos_count">{$page_num}</span></strong> 条</span>
 	</div>
 
 	<table id="table_id_example" class="display" class="text-c">
@@ -52,18 +49,10 @@
 		<th>hospital_name</th>
 		<th>hospital_number</th>
 		<th>create_time</th>
+		<th>edit</th>
 	</tr>
 	</thead>
-	<tbody >
 
-	<!--<td>Data 11</td>-->
-	<!--<td>Data 12</td>-->
-	<!--</tr>-->
-	<!--<tr>-->
-	<!--<td>Data 21</td>-->
-	<!--<td>Data 22</td>-->
-
-	</tbody>
 </table>
 
 
@@ -74,19 +63,25 @@
 
 	var table;
 	$(document).ready( function () {
+//		$('#hos_count').ajax();
 		table = $('#table_id_example').DataTable({
 //            data: data,
 			//使用对象数组，一定要配置columns，告诉 DataTables 每列对应的属性
 			//data 这里是固定不变的，name，position，salary，office 为你数据里对应的属性
 			ajax:"/hospital/ajax_index",
 			aaSorting: [[ 0, "desc" ]],
+			stateSave: true,//状态保存
+			aoColumnDefs: [
+				{"orderable":false,"aTargets":[1,2,3,4,6]}// 制定列不参与排序
+			],
 			columns: [
 				{ data: 'hospital_no' },
 				{ data: 'hospital_ver' },
 				{ data: 'zone' },
 				{ data: 'hospital_name' },
 				{ data: 'hospital_number' },
-				{ data: 'create_time' }
+				{ data: 'create_time' },
+				{ targets:-1, data:null, defaultContent:'<button>编辑</button>'}
 			],
 			language: {
 				'emptyTable': '没有数据',
@@ -107,8 +102,29 @@
 			}
 		});
 
+		var timeFn = null;
+
 		$('#table_id_example tbody').on( 'click', 'tr', function () {
-			$(this).toggleClass('selected');
+			if($(this).hasClass('selected')) {
+				$(this).removeClass('selected');
+			}
+			else{
+				table.$('tr.selected').removeClass('selected');
+				$(this).addClass('selected');
+			}
+		} );
+
+		$('#table_id_example tbody').on( 'click', 'button', function () {
+			var data= table.row( $(this).parents('tr') ).data();
+			layer.open({
+				type:2,
+				title:'编辑医院',
+				area:['800px','300px'],
+				content:'hospital/edit?'+'hos_num='+data['hospital_number']+'&hos_name='+data['hospital_name']+'&hos_zone='+data['zone']+'&hos_no='+data['hospital_no'],
+				end:function () {
+					table.ajax.reload(null,false);
+				}
+			});
 		} );
 
 		$('#btnDel').on('click',delRow);
@@ -124,32 +140,20 @@
 		}
 
 		function addRow() {
-//            table.ajax.reload();
-//            table.row.add( {
-//                "name":       "xiao",
-//                "position":   "Hangzhou",
-//                "salary":     "$3,120",
-//                "start_date": "2016/04/25",
-//                "office":     "soyea",
-//                "extn":       "5421"
-//            } ).draw();
-//            alert("add");
-//            var rows = table
-//                    .rows('.selected')
-//                    .remove()
-//                    .draw();
-			var count = 1;
-//            table.ajax.reload();
 			layer.open({
 				type:2,
 				title:'添加医院',
 				area:['800px','300px'],
 				content:'hospital/add',
 				end:function () {
+					$.get('/hospital/ajax_count',function (data) {
+						$('#hos_count').html(data);
+					});
 					table.ajax.reload();
 				}
 			});
 		}
+
 
 	} );
 </script>

@@ -10,87 +10,96 @@
 	<LINK rel="Bookmark" href="/favicon.ico" >
 	<LINK rel="Shortcut Icon" href="/favicon.ico" />
 	<!--[if lt IE 9]>
-	<script type="text/javascript" src="lib/html5.js"></script>
-	<script type="text/javascript" src="lib/respond.min.js"></script>
-	<script type="text/javascript" src="lib/PIE_IE678.js"></script>
+	<script type="text/javascript" src="http://lib.h-ui.net/html5.js"></script>
+	<script type="text/javascript" src="http://lib.h-ui.net/respond.min.js"></script>
+	<script type="text/javascript" src="http://lib.h-ui.net/PIE_IE678.js"></script>
 	<![endif]-->
-	<link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
-	<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
-	<link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.7/iconfont.css" />
-	<link rel="stylesheet" type="text/css" href="../lib/icheck/icheck.css" />
-	<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
-	<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
+	<link rel="stylesheet" type="text/css" href="http://static.h-ui.net/h-ui/css/H-ui.min.css" />
+	<link rel="stylesheet" type="text/css" href="http://static.h-ui.net/h-ui/css/H-ui.admin.css" />
+	<link rel="stylesheet" type="text/css" href="http://lib.h-ui.net/Hui-iconfont/1.0.7/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="http://lib.h-ui.net/icheck/icheck.css" />
+	<link rel="stylesheet" type="text/css" href="http://static.h-ui.net/h-ui/skin/default/skin.css" id="skin" />
+	<link rel="stylesheet" type="text/css" href="http://static.h-ui.net/h-ui/css/style.css" />
 	<!--[if IE 6]>
 	<script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
 	<script>DD_belatedPNG.fix('*');</script>
 	<![endif]-->
 	<!--/meta 作为公共模版分离出去-->
 
-	<title>新增图片</title>
-	<link href="../lib/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css" />
+	<title>编辑医院</title>
 </head>
 <body>
-<div class="page-container">
-	<form class="form form-horizontal" id="form-hospital-add" action="/hospital/add_one">
+<article class="page-container">
+	<form class="form form-horizontal" id="form-hos-add" >
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>医院编码：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="id_hos_num" name="hospital_number">
+			<label class="form-label col-xs-4 col-sm-3">医院编号：</label>
+			<div class="formControls col-xs-8 col-sm-6">
+				<input type="text" class="input-text" style="color: #7e8795" value="{$hos_no}" placeholder="" id="hos_no" name="hos_no" readonly="readonly">
 			</div>
 		</div>
 
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2">医院名称：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="id_hos_name" name="hospital_name">
+			<label class="form-label col-xs-4 col-sm-3">医院编码：</label>
+			<div class="formControls col-xs-8 col-sm-6">
+				<input type="text" class="input-text" style="color: #7e8795" value="{$hos_num}" placeholder="" id="hos_num" name="hos_num" readonly="readonly">
 			</div>
 		</div>
 
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2">地区：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="id_zone" name="zone">
+			<label class="form-label col-xs-4 col-sm-3">医院名：</label>
+			<div class="formControls col-xs-8 col-sm-6">
+				<input type="text" class="input-text" value="{$hos_name}" placeholder="" id="hos_name" name="hos_name" autofocus >
 			</div>
 		</div>
 
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">地区：</label>
+			<div class="formControls col-xs-8 col-sm-6">
+				<input type="text" class="input-text" value="{$hos_zone}" placeholder="" id="hos_zone" name="hos_zone" >
+			</div>
+		</div>
 
 		<div class="row cl">
-			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-				<button id="id_hos_add" class="btn btn-primary radius" type="button">提交</button>
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input id='btnSubmit' class="btn btn-primary radius" type="button" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
 			</div>
 		</div>
 	</form>
-</div>
-
+</article>
 
 <!--_footer 作为公共模版分离出去-->
-<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script>
-<script type="text/javascript" src="../lib/layer/2.1/layer.js"></script>
-<script type="text/javascript" src="../lib/icheck/jquery.icheck.min.js"></script>
-<script type="text/javascript" src="../lib/jquery.validation/1.14.0/jquery.validate.min.js"></script>
-<script type="text/javascript" src="../lib/jquery.validation/1.14.0/validate-methods.js"></script>
-<script type="text/javascript" src="../lib/jquery.validation/1.14.0/messages_zh.min.js"></script>
-<script type="text/javascript" src="../static/h-ui/js/H-ui.js"></script>
-<script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script>
-<script type="text/javascript" src="../static/h-ui.admin/js/comment.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/layer/2.1/layer.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/icheck/jquery.icheck.min.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/jquery.validate.min.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/messages_zh.min.js"></script>
+<script type="text/javascript" src="static/h-ui/js/H-ui.js"></script>
+<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
 <!--/_footer /作为公共模版分离出去-->
 
 <!--请在下方写此页面业务相关的脚本-->
-<script type="text/javascript" src="../lib/webuploader/0.1.5/webuploader.min.js"></script>
 <script type="text/javascript">
-	var tmpLayer;
 
-	$(function () {
-		$('#id_hos_add').on('click',function () {
-			$.post('/hospital/add_one',{'zone':$('#id_zone').val(),'hospital_name':$('#id_hos_name').val(),
-						'hospital_number':$('#id_hos_num').val()},
-					function(data) {
-//						alert(data);
-						layer_close();
-					});
-		})
-	})
+	$(document).ready(function () {
+		$('#hos_name').select();
+		$('#btnSubmit').on('click',function () {
+			$.post('/hospital/edit_one',
+					{'hos_no':$('#hos_no').val(),'hos_name':$('#hos_name').val(),'hos_zone':$('#hos_zone').val()},
+			function (data) {
+//				alert(data);
+				if(data==0){
+					var index = parent.layer.getFrameIndex(window.name);
+					parent.layer.close(index);
+				}else{
+					alert('err:'+data);
+				}
+			})
+		});
 
+
+	});
 </script>
+<!--/请在上方写此页面业务相关的脚本-->
 </body>
 </html>
