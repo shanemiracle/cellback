@@ -35,6 +35,17 @@ class Hospital extends Rest
         return (new View())->fetch('hospital/index',$page);
     }
 
+    public function ajax_hos_list(){
+        $data = tableHospital::hos_list();
+        if( $data == null ) {
+            print 0;
+        }
+        else {
+            print $data;
+        }
+
+    }
+
     public function ajax_count() {
         $data = tableHospital::count();
         if( $data == null ) {

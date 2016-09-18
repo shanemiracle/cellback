@@ -32,6 +32,12 @@ class tableHospital
         return $ret;
     }
 
+    public static function hos_list(){
+//        $data = Db::table(tableHospital::$tableName)->where('hospital_no','zone hospital_name hospital_number as name')->select();
+        $data = Db::query("select hospital_no, concat_ws(',',zone,hospital_name,hospital_number) as name from hospital");
+        return $data;
+    }
+
     public static function get( $hos_no ) {
         $data = Db::table(tableHospital::$tableName)->where('hospital_no',$hos_no)->find();
 
