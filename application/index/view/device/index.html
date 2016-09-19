@@ -25,28 +25,31 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 设备管理 <span class="c-gray en">&gt;</span> 设备列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-	<div class="cl pd-5 bg-1 bk-gray mt-20">
-		<span class="l">
-			<select id="hospital" data-placeholder="请选择医院" style="width:210px;">
+
+	<div class="text-c">
+			<select id="hospital" data-placeholder="请选择医院(点开可搜索)" style="width:420px;">
 				<option value="-1"></option>
 				<?php for($i=0;$i<$count;$i++){ ?>
 				<option value={$data[$i]['hospital_no']}>{$data[$i]['name']}</option>
 				<?php }?>
 			</select>
-		</span>
+	</div>
 
+	<div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="l">
+			<i class="Hui-iconfont">&#xe600;</i>
+			<input type="button" id="btnAdd" value="添加设备" class="btn btn-primary radius ">
+		</span>
+		</span>
 		<span class="r">共有数据：<strong><span id="device_count">0</span></strong> 条</span>
 	</div>
 
 	<table id="table_id_example" class="display" class="text-c">
 	<thead>
 	<tr>
-		<th>hospital_no</th>
-		<th>hospital_ver</th>
-		<th>zone</th>
-		<th>hospital_name</th>
-		<th>hospital_number</th>
-		<th>create_time</th>
+		<th>机器码</th>
+		<th>创建时间</th>
+		<th>到期时间</th>
 		<th>edit</th>
 	</tr>
 	</thead>
@@ -61,44 +64,33 @@
 
 	var hos = $('#hospital');
 
+	hos.chosen({
+		no_results_text:'没有数据',
+		search_contains:true,
+		allow_single_deselect:true,
+		display_disabled_options:false
+
+	});
+
 	var table;
 	$(document).ready( function () {
-
-		hos.chosen({
-			no_results_text:'没有数据',
-			search_contains:true,
-			allow_single_deselect:true,
-			display_disabled_options:false
-
-		});
-
-		hos.change(function () {
-//			alert('change');
-		});
-
-		$('#btn').on('click',function () {
-//            alert($('#hospital').val());
-		});
-
-//		$('#hos_count').ajax();
 		table = $('#table_id_example').DataTable({
 //            data: data,
 			//使用对象数组，一定要配置columns，告诉 DataTables 每列对应的属性
 			//data 这里是固定不变的，name，position，salary，office 为你数据里对应的属性
-			ajax:"/hospital/ajax_index",
-			aaSorting: [[ 0, "desc" ]],
+			ajax: {
+				url:"/device/ajax_list",
+				data: function(d){
+					d.hos_no = hos.val();
+				}
+			},
+			aaSorting: [[ 1, "desc" ]],
 			stateSave: true,//状态保存
-			aoColumnDefs: [
-				{"orderable":false,"aTargets":[1,2,3,4,6]}// 制定列不参与排序
-			],
 			columns: [
-				{ data: 'hospital_no' },
-				{ data: 'hospital_ver' },
-				{ data: 'zone' },
-				{ data: 'hospital_name' },
-				{ data: 'hospital_number' },
+				{ data: 'machine_code' },
 				{ data: 'create_time' },
-				{ targets:-1, data:null, defaultContent:'<button>编辑</button>'}
+				{ data: 'end_time' },
+				{ targets:-1, data:null, defaultContent:'<button id="bedit" class="btn btn-default radius">编辑</button>|<button id="bdel" class="btn btn-default radius">删除</button>'}
 			],
 			language: {
 				'emptyTable': '没有数据',
@@ -119,27 +111,77 @@
 			}
 		});
 
-		$('#table_id_example tbody').on( 'click', 'tr', function () {
-			if($(this).hasClass('selected')) {
-				$(this).removeClass('selected');
-			}
-			else{
-				table.$('tr.selected').removeClass('selected');
-				$(this).addClass('selected');
-			}
-		} );
+		function hos_check() {
+			return (hos.val() != -1);
+		}
 
-		$('#table_id_example tbody').on( 'click', 'button', function () {
+
+		hos.change(function () {
+//			alert($('#hospital').val());
+			table.ajax.reload( function () {
+				var info = table.page.info();
+				$('#device_count').html(info.recordsTotal);
+			});
+
+
+		});
+
+		$('#btn').on('click',function () {
+//            alert($('#hospital').val());
+		});
+
+
+
+//		$('#table_id_example tbody').on( 'click', 'tr', function () {
+//			if($(this).hasClass('selected')) {
+//				$(this).removeClass('selected');
+//			}
+//			else{
+//				table.$('tr.selected').removeClass('selected');
+//				$(this).addClass('selected');
+//			}
+//		} );
+
+		$('#table_id_example tbody').on( 'click', 'button#bedit',function () {
 			var data= table.row( $(this).parents('tr') ).data();
 			layer.open({
 				type:2,
-				title:'编辑医院',
-				area:['800px','300px'],
-				content:'hospital/edit?'+'hos_num='+data['hospital_number']+'&hos_name='+data['hospital_name']+'&hos_zone='+data['zone']+'&hos_no='+data['hospital_no'],
+				title:'编辑设备',
+				area:['800px','380px'],
+				content:'device/edit?'+'hos_name='+hos.find('option:selected').text()+'&hos_no='+hos.val()+'&mcode='+data['machine_code']+'&ctime='+data['create_time']+'&etime='+data['end_time'],
 				end:function () {
 					table.ajax.reload(null,false);
 				}
 			});
+		} );
+
+		$('#table_id_example tbody').on( 'click', 'button#bdel',function () {
+			var data= table.row( $(this).parents('tr') ).data();
+			var rowid = $(this).parents('tr');
+//			layer.open({
+//				type:2,
+//				title:'编辑医院',
+//				area:['800px','300px'],
+//				content:'hospital/edit?'+'hos_num='+data['hospital_number']+'&hos_name='+data['hospital_name']+'&hos_zone='+data['zone']+'&hos_no='+data['hospital_no'],
+//				end:function () {
+//					table.ajax.reload(null,false);
+//				}
+//			});
+			layer.confirm('是否删除?',{icon:3,title:'提示'},function(index){
+				$.post('/device/del_one',{'mcode':data['machine_code']},function (d) {
+					if(d==0){
+						var rows = table
+								.rows(rowid )
+								.remove()
+								.draw();
+					}else{
+						alert(d);
+					}
+				});
+				layer.close(index);
+			} );
+
+
 		} );
 
 		$('#btnDel').on('click',delRow);
@@ -155,16 +197,19 @@
 		}
 
 		function addRow() {
+
+			if( !hos_check() ) {
+				layer.msg('请先选择医院',{icon:7,time:1500},null);
+				return;
+			}
+
 			layer.open({
 				type:2,
-				title:'添加医院',
-				area:['800px','300px'],
-				content:'hospital/add',
+				title:'添加设备',
+				area:['800px','360px'],
+				content:'device/add?hos_name='+hos.find('option:selected').text()+'&hos_no='+hos.val(),
 				end:function () {
-					$.get('/hospital/ajax_count',function (data) {
-						$('#hos_count').html(data);
-					});
-					table.ajax.reload();
+					table.ajax.reload(null,false);
 				}
 			});
 		}
