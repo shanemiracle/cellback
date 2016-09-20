@@ -28,11 +28,12 @@ class Doctor{
         $ret = Cellserver::postData(json_encode($Redata));
         if ($ret != null) {
             $retData = json_decode($ret, true);
+            print_r($retData);
             if ($retData && $retData['retCode'] == 0) {
                 print 0;
             }
             else{
-                print 'err'.$retData['retCode'];
+                print 'err+'.$retData['retCode'];
             }
 
         } else {
