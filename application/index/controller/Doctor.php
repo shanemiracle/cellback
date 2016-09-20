@@ -101,7 +101,7 @@ class Doctor{
             if ($retData && $retData['retCode'] == 0) {
                 print 1;
             }
-            else if ($retData && $retData['retCode'] == 0x22) {
+            else if ($retData && $retData['retCode'] == 0x8) {
                 print 0;
             }
 
