@@ -8,11 +8,12 @@
 namespace app\index\controller;
 
 use app\index\cell\Cellserver;
+use think\controller\Rest;
 use think\Request;
 use think\Session;
 use think\View;
 
-class Doctor{
+class Doctor extends Rest{
     public function index() {
         return (new View())->fetch('doctor/index');
     }
@@ -92,23 +93,27 @@ class Doctor{
 
     }
 
-    public function ajax_list() {
-        $hos_no =  Request::instance()->param('hos_no');
 
+    public function ajax_list() {
+        $hos_no = Request::instance()->param('hos_no');
         $Redata = ['cmd_id' =>12, 'cmd_flag' => 0, 'cmd_data' => ['attest'=>Session::get("attest"),'hospital_no'=>intval($hos_no)]];
         $ret = Cellserver::postData(json_encode($Redata));
-        if ($ret != null) {
-            $retData = json_decode($ret, true);
-            if ($retData && $retData['retCode'] == 0) {
-                print 1;
+
+        if( $ret ) {
+
+            $getData = json_decode($ret,true);
+            if($getData['retCode']==0) {
+                $data=['data'=>$getData['data']];
             }
-            else if ($retData && $retData['retCode'] == 0x8) {
-                print 0;
+            else{
+                $data=['data'=>""];
             }
 
-        } else {
-            print 2;
+        }
+        else {
+            $data=['data'=>""];
         }
 
+        return $this->response($data,'json',200);
     }
 }
