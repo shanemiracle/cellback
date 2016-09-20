@@ -120,7 +120,7 @@ role: int
 
 4.获取医生列表（根据hospital_no获取医生列表）  cmd_id =12  ENUM_WEB_CMD_WEB_DOCTOR_LIST
 		传入："attest","hospital_no"
-		返回：data:"doctor_no","doctor_ver"
+		返回：data:"doctor_no","doctor_name","doctor_ver","pwd","level","department","logo","sign_pic","mobile_no","doctor_ver","role","create_time"
 		ENUM_BUSINESS_RET_CODE_ATTEST_ERR:6管理员的attest错误，需要重新获取attest
 		ENUM_BUSINESS_RET_CODE_HOSPITAL_NO_ERR:8医院不存
 		ENUM_BUSINESS_RET_CODE_UNKNOWN:1未知错误

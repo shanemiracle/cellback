@@ -92,7 +92,7 @@ class Doctor{
 
     }
 
-    public function ajax_exist() {
+    public function ajax_list() {
         $hos_no =  Request::instance()->param('hos_no');
 
         $Redata = ['cmd_id' =>12, 'cmd_flag' => 0, 'cmd_data' => ['attest'=>Session::get("attest"),'hospital_no'=>intval($hos_no)]];
