@@ -16,7 +16,8 @@ class Doctor{
     public function index() {
         return (new View())->fetch('doctor/index');
     }
-    
+
+
     public function add_one() {
         $hos_no =  Request::instance()->param('hos_no');
         $doctor_name = Request::instance()->param('doctor_name');
