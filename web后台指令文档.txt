@@ -108,7 +108,7 @@ role: int
 		ENUM_BUSINESS_RET_CODE_DOCTOR_NO_ERR:11 医生编号错误
 		ENUM_BUSINESS_RET_CODE_DOCTOR_VER_ERR：12，版本错误
 		ENUM_BUSINESS_RET_CODE_UNKNOWN:1未知错误
-		例如:{"retCode":0,"retDesc":"ENUM_BUSINESS_RET_CODE_OK","cmdId":10,"cmdFlag":1024,"doctor_ver"：2"}
+		例如:{"retCode":0,"retDesc":"ENUM_BUSINESS_RET_CODE_OK","cmdId":10,"cmdFlag":0,"doctor_ver"：2"}
 
 
 3.医生删除  cmd_id = 11  ENUM_WEB_CMD_WEB_DOCTOR_DEL
@@ -116,7 +116,7 @@ role: int
 		返回：
 		ENUM_BUSINESS_RET_CODE_ATTEST_ERR:6管理员的attest错误，需要重新获取attest
 		ENUM_BUSINESS_RET_CODE_UNKNOWN:1未知错误
-		例如:{"retCode":0,"retDesc":"ENUM_BUSINESS_RET_CODE_OK","cmdId":11,"cmdFlag":1024}
+		例如:{"retCode":0,"retDesc":"ENUM_BUSINESS_RET_CODE_OK","cmdId":11,"cmdFlag":0}
 
 4.获取医生列表（根据hospital_no获取医生列表）  cmd_id =12  ENUM_WEB_CMD_WEB_DOCTOR_LIST
 		传入："attest","hospital_no"
@@ -124,7 +124,14 @@ role: int
 		ENUM_BUSINESS_RET_CODE_ATTEST_ERR:6管理员的attest错误，需要重新获取attest
 		ENUM_BUSINESS_RET_CODE_HOSPITAL_NO_ERR:8医院不存
 		ENUM_BUSINESS_RET_CODE_UNKNOWN:1未知错误
-	
+		列如：{"retCode":0,"retDesc":"ENUM_BUSINESS_RET_CODE_OK","cmdId":12,"cmdFlag":0,"data":[{"doctor_no":"AAAAAQAAAAE=","doctor_name":"qium","pwd":"123456","doctor_ver":3,"level":"1","department":"aaaa","logo":"123454","sign_pic":"12345","mobile_no":"12345","role":1,"create_time":"2016-09-20 16:16:52"},{"doctor_no":"AAAAAQAAAAQ=","doctor_name":"xiaoj","pwd":"111111","doctor_ver":1,"level":"","department":"","logo":"","sign_pic":"","mobile_no":"","role":0,"create_time":"2016-09-21 15:09:59"},{"doctor_no":"AAAAAQAAAAU=","doctor_name":"yaoj","pwd":"111111","doctor_ver":1,"level":"","department":"","logo":"","sign_pic":"","mobile_no":"","role":0,"create_time":"2016-09-21 15:20:26"}]}
+5.检查医生名是否存在（存在获取到医生的信息返回，不存在包医生名错误）  cmd_id =14 ENUM_WEB_CMD_WEB_DOCTOR_NAME_CHECK
+    		传入："attest","doctor_name"
+    		返回：data:"doctor_no","doctor_name","doctor_ver","pwd","level","department","logo","sign_pic","mobile_no","doctor_ver","role","create_time"
+    		ENUM_BUSINESS_RET_CODE_ATTEST_ERR:6管理员的attest错误，需要重新获取attest
+    		ENUM_BUSINESS_RET_CODE_DOCTOR_NAME_ERR:1B医生不存在
+    		ENUM_BUSINESS_RET_CODE_UNKNOWN:1未知错误
+    		列如：{"retCode":0,"retDesc":"ENUM_BUSINESS_RET_CODE_OK","cmdId":14,"cmdFlag":0,{"doctor_no":"AAAAAQAAAAU=","doctor_name":"yaoj","pwd":"111111""doctor_ver":1,"level":"","department":"","logo":"","sign_pic":"","mobile_no":"","role":0,"create_time":"2016-09-21 15:20:26"}}
 
 
 
