@@ -116,4 +116,24 @@ class Doctor extends Rest{
 
         return $this->response($data,'json',200);
     }
+
+    public function ajax_exist() {
+        $hos_no = Request::instance()->param('hos_no');
+        $doctor_name = Request::instance()->param('doctor_name');
+        $Redata = ['cmd_id' =>14, 'cmd_flag' => 0, 'cmd_data' => ['attest'=>Session::get("attest"),'hospital_no'=>intval($hos_no),'doctor_name'=>$doctor_name]];
+        $ret = Cellserver::postData(json_encode($Redata));
+        if ($ret != null) {
+            $retData = json_decode($ret, true);
+            if ($retData && $retData['retCode'] == 0) {
+                print 1;
+            }
+            else if ($retData && $retData['retCode'] == 0x1B) {
+                print 0;
+            }
+
+        } else {
+            print 2;
+        }
+
+    }
 }
