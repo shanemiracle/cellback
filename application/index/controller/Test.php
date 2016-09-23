@@ -30,4 +30,12 @@ class Test extends Rest
         $data = tableHospital::hos_list();
         return $this->response($data,'json',200);
     }
+
+    public function up() {
+        return '<form action="/file/upload" enctype="multipart/form-data" method="post"> <input type="file" name="image"/> <br> <input type="submit" value="上传"/> </form> ';
+    }
+
+    public function file() {
+        return (new View())->fetch('file');
+    }
 }

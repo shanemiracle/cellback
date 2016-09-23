@@ -40,8 +40,12 @@ class Index extends Rest
                 $view = new View();
 
                 return $view->fetch('index');
+            }else {
+                $view = new View();
+                return $view->fetch('login/login');
             }
-            return $this->response($array, 'html', 200);
+
+//            return $this->response($array, 'html', 200);
 
         } else {
             print 'error';
