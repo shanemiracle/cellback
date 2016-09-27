@@ -91,7 +91,7 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">头像: </label>
 			<div class="formControls col-xs-8 col-sm-6">
-				<img class="avatar size-XXXL radius" src="{$url}{$logo}">
+				<img id="imglogo" class="avatar size-XXXL radius"  src="{$url}{$logo}">
 			</div>
 			<div>
 				<input type="hidden" name="logo" value="{$logo}">
@@ -111,7 +111,7 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">签名: </label>
 			<div class="formControls col-xs-8 col-sm-6">
-				<img class="avatar size-XXXL radius" src="{$url}{$sign_pic}">
+				<img class="avatar size-XXXL radius" id="imgsign" src="{$url}{$sign_pic}">
 			</div>
 			<div>
 				<input type="hidden" name="sign_pic" value="{$sign_pic}">
@@ -210,6 +210,22 @@
 				a.value = 0;
 			}
 		});
+
+        $('#imglogo').on('dblclick',function () {
+//            alert($('#imglogo').attr('src'));
+            layer_show('头像',$('#imglogo').attr('src'));
+        });
+
+//        function imglogodbclick() {
+//                alert('dbclick');
+//                layer.open({
+//                    type:2,
+//                    title:'头像',
+//                    area:['600px','600px'],
+//                    url: $('#imglogo').attr('src')
+//
+//                });
+//        }
 
 		
 //		$('#upload').on('click',function () {

@@ -32,10 +32,23 @@ class Test extends Rest
     }
 
     public function up() {
-        return '<form action="/file/upload" enctype="multipart/form-data" method="post"> <input type="file" name="image"/> <br> <input type="submit" value="上传"/> </form> ';
+        return '<form action="/file/uploadlogo" enctype="multipart/form-data" method="post"> <input type="file" name="image"/> <br> <input type="submit" value="上传"/> </form> ';
     }
 
     public function file() {
         return (new View())->fetch('file');
+    }
+
+    public function bin() {
+//        $file = fopen('/public/logo/f0/a18136d77decf88e5376bd450f3142.jpg','rb');
+//
+//        echo filesize($file);
+//        $readData = fread($file,50);
+//        echo $readData;
+
+//        fclose($file);
+
+
+
     }
 }
