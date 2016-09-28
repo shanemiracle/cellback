@@ -132,10 +132,30 @@ role: int
     		ENUM_BUSINESS_RET_CODE_DOCTOR_NAME_ERR:1B医生不存在
     		ENUM_BUSINESS_RET_CODE_UNKNOWN:1未知错误
     		列如：{"retCode":0,"retDesc":"ENUM_BUSINESS_RET_CODE_OK","cmdId":14,"cmdFlag":0,"doctor_no":"AAAAAQAAAAU=","doctor_name":"yaoj","pwd":"111111","doctor_ver":1,"level":"","department":"","logo":"","sign_pic":"","mobile_no":"","role":0,"create_time":"2016-09-21 15:20:26"}
+//md5文件上传
 
+1.文件头上传  cmd_id = 15  ENUM_WEB_CMD_WEB_FILE_UPLOAD_HEAD
+		传入："attest","md5_id","file_size"
+		返回："block_size","md5_status","create_time"
+		ENUM_BUSINESS_RET_CODE_ATTEST_ERR:6管理员的attest错误，需要重新获取attest
+		ENUM_BUSINESS_RET_CODE_FILE_ERR_EXIST:29md5id已经存在
+		ENUM_BUSINESS_RET_CODE_UNKNOWN:1未知错误
 
+2.文件data上传  cmd_id = 16  ENUM_WEB_CMD_WEB_FILE_UPLOAD_DATA
+		传入："attest","md5_id","index","block_crc","data_len","data"
+		返回：无
+		ENUM_BUSINESS_RET_CODE_ATTEST_ERR:6管理员的attest错误，需要重新获取attest
+		ENUM_BUSINESS_RET_CODE_FILE_ERR_NOT_EXIST:2a  md5id不存在
+		ENUM_BUSINESS_RET_CODE_FILE_ERR_DATA_LEN:2b data_len错误
+		ENUM_BUSINESS_RET_CODE_FILE_ERR_CRC：2c block_crc错误
+		ENUM_BUSINESS_RET_CODE_UNKNOWN:1未知错误
 
-
+3.文件上传完成ok  cmd_id = 17  ENUM_WEB_CMD_WEB_FILE_UPLOAD_OK
+		传入："attest","md5_id"
+		返回：无
+		ENUM_BUSINESS_RET_CODE_ATTEST_ERR:6管理员的attest错误，需要重新获取attest
+		ENUM_BUSINESS_RET_CODE_FILE_ERR_NOT_EXIST:2a  md5id不存在
+		ENUM_BUSINESS_RET_CODE_UNKNOWN:1未知错误
 
 
 
