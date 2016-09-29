@@ -151,6 +151,7 @@ role: int
 		ENUM_BUSINESS_RET_CODE_UNKNOWN:1未知错误
 
 3.文件上传完成ok  cmd_id = 17  ENUM_WEB_CMD_WEB_FILE_UPLOAD_OK
+
 		传入："attest","md5_id"
 		返回：无
 		ENUM_BUSINESS_RET_CODE_ATTEST_ERR:6管理员的attest错误，需要重新获取attest
