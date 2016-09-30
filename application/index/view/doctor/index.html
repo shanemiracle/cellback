@@ -3,8 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <title>医生管理</title>
+    <link rel="stylesheet" type="text/css" href="/DataTables-1.10.12/media/css/jquery.dataTables.css">
+
+    <link rel="stylesheet" type="text/css" href="/static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="/lib/Hui-iconfont/1.0.7/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="/lib/icheck/icheck.css" />
+    <link rel="stylesheet" type="text/css" href="/static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="/static/h-ui.admin/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/css/chosen.css">
+
+    <!-- jQuery -->
+    <script type="text/javascript" charset="utf8" src="/DataTables-1.10.12/media/js/jquery.js"></script>
+
+    <!-- DataTables -->
+    <script type="text/javascript" charset="utf8" src="/DataTables-1.10.12/media/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8" src="/lib/layer/2.1/layer.js"></script>
+    <!--<script src="/lib/jquery/jquery-3.1.0.min.js"></script>-->
+    <script src="/js/chosen.jquery.min.js"></script>
 </head>
 <body>
-医生
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 医生管理 <span class="c-gray en">&gt;</span> 医生列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+
+    <div class="text-c">
+        <select id="hospital" data-placeholder="请选择医院(点开可搜索)" style="width:420px;">
+            <option value="-1"></option>
+            <?php for($i=0;$i<$count;$i++){ ?>
+            <option value={$data[$i]['hospital_no']}>{$data[$i]['name']}</option>
+            <?php }?>
+        </select>
+    </div>
+
+    <div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="l">
+			<i class="Hui-iconfont">&#xe600;</i>
+			<input type="button" id="btnAdd" value="添加医生" class="btn btn-primary radius ">
+		</span>
+        </span>
+        <span class="r">共有数据：<strong><span id="device_count">0</span></strong> 条</span>
+    </div>
+
+    <table id="table_id_example" class="display" class="text-c">
+        <thead>
+        <tr>
+            <th>医生编号</th>
+            <th>医生姓名</th>
+            <th>信息版本号</th>
+            <th>创建时间</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+
+    </table>
+
+
+</div>
 </body>
+
+<script>
+
+    var hos = $('#hospital');
+
+    hos.chosen({
+        no_results_text:'没有数据',
+        search_contains:true,
+        allow_single_deselect:true,
+        display_disabled_options:false
+
+    });
+
+    var table;
+    $(document).ready( function () {
+        table = $('#table_id_example').DataTable({
+//            data: data,
+            //使用对象数组，一定要配置columns，告诉 DataTables 每列对应的属性
+            //data 这里是固定不变的，name，position，salary，office 为你数据里对应的属性
+            ajax: {
+                url:"/doctor/ajax_list",
+                data: function(d){
+                    d.hos_no = hos.val();
+                }
+            },
+            aaSorting: [[ 3, "desc" ]],
+            stateSave: true,//状态保存
+            columns: [
+                { data: 'doctor_no' },
+                { data: 'doctor_name' },
+                { data: 'doctor_ver' },
+                { data: 'create_time' },
+                { targets:-1, data:null, defaultContent:'<button id="bedit" class="btn btn-default radius">详情</button>|<button id="bdel" class="btn btn-default radius">删除</button>'}
+            ],
+            language: {
+                'emptyTable': '没有数据',
+                'loadingRecords': '加载中...',
+                'processing': '查询中...',
+                'search': '检索:',
+                'lengthMenu': '每页 _MENU_ 条',
+                'zeroRecords': '没有数据',
+                'paginate': {
+                    'first':      '第一页',
+                    'last':       '最后一页',
+                    'next':       '后一页',
+                    'previous':   '前一页'
+                },
+                'info': '第 _PAGE_ 页 / 总 _PAGES_ 页',
+                'infoEmpty': '没有数据',
+                'infoFiltered': '(过滤总件数 _MAX_ 条)'
+            }
+        });
+
+        function hos_check() {
+            return (hos.val() != -1);
+        }
+
+
+        hos.change(function () {
+//			alert($('#hospital').val());
+            table.ajax.reload( function () {
+                var info = table.page.info();
+                $('#device_count').html(info.recordsTotal);
+            });
+
+
+        });
+
+        $('#btn').on('click',function () {
+//            alert($('#hospital').val());
+        });
+
+
+
+//		$('#table_id_example tbody').on( 'click', 'tr', function () {
+//			if($(this).hasClass('selected')) {
+//				$(this).removeClass('selected');
+//			}
+//			else{
+//				table.$('tr.selected').removeClass('selected');
+//				$(this).addClass('selected');
+//			}
+//		} );
+
+        $('#table_id_example tbody').on( 'click', 'button#bedit',function () {
+            var data= table.row( $(this).parents('tr') ).data();
+            var index = layer.open({
+                type:2,
+                title:'医生详情',
+                maxmin:true,
+                area:['960px','580px'],
+                content:'/doctor/edit?'+'hos_no='+hos.val()+'&hos_name='+hos.find('option:selected').text()+'&doc_name='+data['doctor_name'],
+                end:function () {
+                    table.ajax.reload(null,false);
+                }
+            });
+            layer.full(index);
+        } );
+
+        $('#table_id_example tbody').on( 'click', 'button#bdel',function () {
+            var data= table.row( $(this).parents('tr') ).data();
+            layer.confirm('是否删除?',{icon:3,title:'提示'},function(index){
+                $.post('/doctor/del_one',{'doctor_no':data['doctor_no']},function (d) {
+                    if(d==0){
+//
+                        table.ajax.reload(function () {
+                            var info = table.page.info();
+                            $('#device_count').html(info.recordsTotal);
+                        },false);
+                    }else{
+                        alert(d);
+                    }
+                });
+                layer.close(index);
+            } );
+
+
+        } );
+
+        $('#btnDel').on('click',delRow);
+
+
+        $('#btnAdd').on('click',addRow);
+
+        function delRow() {
+            var rows = table
+                    .rows('.selected')
+                    .remove()
+                    .draw();
+        }
+
+        function addRow() {
+
+            if( !hos_check() ) {
+                layer.msg('请先选择医院',{icon:7,time:1500},null);
+                return;
+            }
+
+            layer.open({
+                type:2,
+                title:'添加医生',
+                area:['800px','360px'],
+                content:'/doctor/add?hos_name='+hos.find('option:selected').text()+'&hos_no='+hos.val(),
+                end:function () {
+                    table.ajax.reload(function () {
+                        var info = table.page.info();
+                        $('#device_count').html(info.recordsTotal);
+                    },false);
+                }
+            });
+        }
+
+
+    } );
+</script>
+
 </html>

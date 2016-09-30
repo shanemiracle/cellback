@@ -1,0 +1,178 @@
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<LINK rel="Bookmark" href="/favicon.ico" >
+<LINK rel="Shortcut Icon" href="/favicon.ico" />
+
+
+<!--[if lt IE 9]>
+<script type="text/javascript" src="/lib/html5.js"></script>
+<script type="text/javascript" src="/lib/respond.min.js"></script>
+<script type="text/javascript" src="/lib/PIE_IE678.js"></script>
+<![endif]-->
+<link href="/static/h-ui/css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="/static/h-ui.admin/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="/lib/Hui-iconfont/1.0.7/iconfont.css" rel="stylesheet" type="text/css" />
+
+<link rel="stylesheet" type="text/css" href="/static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="/static/h-ui.admin/css/style.css" />
+
+<!--/meta 作为公共模版分离出去-->
+<script src="/js/jquery.toggle-password.min.js"></script>
+
+<title>添加设备</title>
+</head>
+<body>
+<article class="page-container">
+	<form class="form form-horizontal" id="form-doc-add" action="/doctor/add_one">
+
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">所属医院：</label>
+		<div class="formControls col-xs-8 col-sm-6">
+			<input type="text" class="input-text" style="color: #7e8795" value="{$hos_name}" placeholder="" id="hos_name" name="hos_name" readonly="readonly">
+		</div>
+	</div>
+
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">医院编号：</label>
+		<div class="formControls col-xs-8 col-sm-6">
+			<input type="text" class="input-text" style="color: #7e8795" value="{$hos_no}" placeholder="" id="hos_no" name="hos_no" readonly="readonly">
+		</div>
+	</div>
+
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>用户名：</label>
+		<div class="formControls col-xs-8 col-sm-6">
+			<input type="text" class="input-text" value=""  id="doc_name" name="doc_name" autofocus>
+		</div>
+		<div style="float: right;position: relative;left: -160px">
+			<label id="ltips" style="color: red; display: none" >已存在</label>
+		</div>
+
+	</div>
+
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">密码：</label>
+		<div class="formControls col-xs-8 col-sm-6">
+			<input type="password" class="input-text" value=""  id="pwd" name="pwd"  >
+		</div>
+	</div>
+
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">重复密码：</label>
+		<div class="formControls col-xs-8 col-sm-6">
+			<input type="password" class="input-text" value=""  id="pwd2" name="pwd2"  >
+		</div>
+		<div style="float: right;position: relative;left: -80px">
+			<label id="ltips2" style="color: red; display: none" >两次密码不一致</label>
+		</div>
+	</div>
+
+	<div class="row cl">
+		<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+			<input id='btnSubmit' class="btn btn-primary radius" type="button" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+		</div>
+	</div>
+	</form>
+</article>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="http://lib.h-ui.net/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/layer/2.1/layer.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/icheck/jquery.icheck.min.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/jquery.validate.min.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="http://lib.h-ui.net/jquery.validation/1.14.0/messages_zh.min.js"></script>
+<script type="text/javascript" src="/static/h-ui/js/H-ui.js"></script>
+<script type="text/javascript" src="/static/h-ui.admin/js/H-ui.admin.js"></script>
+
+<!--/_footer /作为公共模版分离出去--> 
+
+<!--请在下方写此页面业务相关的脚本--> 
+<script type="text/javascript">
+
+	var bname = false;
+	var bpwd = false;
+
+//	function submitCheck(b) {
+//		$('#btnSubmit').attr('disabled',b);
+//	}
+$(document).ready(function () {
+
+	function pwd2check() {
+//		alert('pwd2');
+		$('#ltips2').show();
+		if ($('#pwd2').val() !== $('#pwd').val()) {
+			$('#ltips2').show();
+			bpwd = false;
+		}
+		else {
+			$('#ltips2').hide();
+			bpwd = true;
+		}
+	}
+
+	$('#pwd2').bind('change',pwd2check);
+	$('#pwd2').bind('keyup',pwd2check);
+
+	$('#doc_name').on('blur',function () {
+//		alert('blur');
+		if( $('#doc_name').val().length <=0 ) {
+                $('#ltips').html('必填');
+                $('#ltips').show();
+            }
+            else{
+               // 检查存在
+                $.post('/doctor/ajax_exist',{'hos_no':$('#hos_no').val(),'doctor_name':$('#doc_name').val()},
+                        function (data) {
+                            if(data==1){
+                                $('#ltips').html('已存在');
+                                $('#ltips').show();
+								bname = false;
+                            }else if(data==0){
+                                $('#ltips').hide();
+								bname = true;
+                            }else{
+								bname = false;
+                            }
+                        });
+
+            }
+
+	});
+
+	$('#btnSubmit').on('click',function () {
+//		alert('click');
+		if( bname == true && bpwd == true ) {
+//			alert('ok');
+			$.post('/doctor/add_one',{'hos_no':$('#hos_no').val(),'doctor_name':$('#doc_name').val(),'pwd':$('#pwd').val()},
+					function(data) {
+//						alert(data);
+						if(data==0){
+							var index = parent.layer.getFrameIndex(window.name);
+							parent.layer.close(index);
+						}
+						else{
+							alert(data);
+						}
+					})
+		}
+		else{
+//			alert('error');
+			var s = (bname==false)?"名字不合法":((bpwd==flase)?"密码不合法":"异常");
+			alert(s);
+		}
+
+	});
+
+});
+</script> 
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

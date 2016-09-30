@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文件</title>
+    <script type="text/javascript" charset="utf8" src="/lib/jquery/jquery-3.1.0.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="/js/jquery.ajaxfileupload.js"></script>
+
+
+
+</head>
+<body>
+
+<form action="/file/upload" enctype="multipart/form-data" method="post">
+    <div>
+        <input type="file" id="image" name="image" accept="image/*"/>
+    </div>
+
+    <div>
+        <input type="button" id="btn" value="上传"/>
+    </div>
+    <div>
+        <img id="img" alt="上传成功" src="">
+    </div>
+
+</form>
+
+<script>
+    $(document).ready(function () {
+        $('#btn').on('click',function(){
+            $.ajaxFileUpload({
+
+            });
+        });
+
+
+
+
+
+    });
+</script>
+
+
+
+</body>
+</html>

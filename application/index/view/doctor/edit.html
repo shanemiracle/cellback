@@ -1,0 +1,271 @@
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<LINK rel="Bookmark" href="/favicon.ico" >
+	<LINK rel="Shortcut Icon" href="/favicon.ico" />
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="http://lib.h-ui.net/html5.js"></script>
+	<script type="text/javascript" src="http://lib.h-ui.net/respond.min.js"></script>
+	<script type="text/javascript" src="http://lib.h-ui.net/PIE_IE678.js"></script>
+	<![endif]-->
+	<link rel="stylesheet" type="text/css" href="/static/h-ui/css/H-ui.min.css" />
+	<link rel="stylesheet" type="text/css" href="/static/h-ui.admin/css/H-ui.admin.css" />
+	<link rel="stylesheet" type="text/css" href="/lib/Hui-iconfont/1.0.7/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="/lib/icheck/icheck.css" />
+	<link rel="stylesheet" type="text/css" href="/static/h-ui.admin/skin/default/skin.css" id="skin" />
+	<link rel="stylesheet" type="text/css" href="/static/h-ui.admin/css/style.css" />	<!--[if IE 6]>
+	<script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
+	<script type="text/javascript" src="/lib/icheck/jquery.icheck.min.js" ></script>
+	<script>DD_belatedPNG.fix('*');</script>
+	<![endif]-->
+	<!--/meta 作为公共模版分离出去-->
+
+	<title>编辑医生</title>
+</head>
+<body>
+<article class="page-container">
+	<form class="form form-horizontal" action="/doctor/edit_ajax" enctype="multipart/form-data" method="post">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">所属医院: </label>
+			<div class="formControls col-xs-8 col-sm-6">
+				<input type="text" class="input-text" style="color: #7e8795" value="{$hos_name}" placeholder="" id="hos_name" name="hos_name" readonly="readonly">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">用户名: </label>
+			<div class="formControls col-xs-8 col-sm-6">
+				<input type="text" class="input-text" style="color: #7e8795" value="{$doc_name}"  id="doc_name" name="doc_name" readonly="readonly" >
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">用户编号: </label>
+			<div class="formControls col-xs-8 col-sm-6">
+				<input type="text" class="input-text" style="color: #7e8795" value="{$doc_no}"  id="doc_no" name="doc_no" readonly="readonly" >
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">信息版本: </label>
+			<div class="formControls col-xs-8 col-sm-6">
+				<input type="text" class="input-text" style="color: #7e8795" value="{$doc_ver}" placeholder="" id="doc_ver" name="doc_ver" readonly="readonly">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">密码: </label>
+			<div class="formControls col-xs-8 col-sm-6">
+				<input type="text" class="input-text" value="{$pwd}" placeholder="" id="pwd" name="pwd" >
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">职称: </label>
+			<div class="formControls col-xs-8 col-sm-6">
+				<input type="text" class="input-text"  value="{$level}" placeholder="" id="level" name="level" ">
+			</div>
+
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">部门: </label>
+			<div class="formControls col-xs-8 col-sm-6">
+				<input type="text" class="input-text"  value="{$depart}" placeholder="" id="depart" name="depart" ">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">手机号: </label>
+			<div class="formControls col-xs-8 col-sm-6">
+				<input type="text" class="input-text"  value="{$mobile}" placeholder="" id="mobile" name="mobile" ">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">头像: </label>
+			<div class="formControls col-xs-8 col-sm-6">
+				<img id="imglogo" class="avatar size-XXXL radius"  src="{$url}{$logo}">
+			</div>
+			<div>
+				<input type="hidden" name="logo" value="{$logo}">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"></label>
+				<div class="formControls col-xs-8 col-sm-6">
+					<!--<form action="/file/uploadlogo" enctype="multipart/form-data" method="post">-->
+						<input type="file" name="logofile" accept="image/*" />
+						<!--<input type="submit" value="上传" class="btn btn-primary radius" />-->
+					<!--</form>-->
+				</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">签名: </label>
+			<div class="formControls col-xs-8 col-sm-6">
+				<img class="avatar size-XXXL radius" id="imgsign" src="{$url}{$sign_pic}">
+			</div>
+			<div>
+				<input type="hidden" name="sign_pic" value="{$sign_pic}">
+			</div>
+
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"></label>
+			<div class="formControls col-xs-8 col-sm-6">
+				<!--<form action="/file/uploadsign" enctype="multipart/form-data" method="post">-->
+					<input type="file" name="sign_picfile" accept="image/*" />
+					<!--<input type="submit" value="上传" class="btn btn-primary radius" />-->
+				<!--</form>-->
+			</div>
+		</div>
+
+		<div class="row cl ">
+			<label class="form-label col-xs-4 col-sm-3">角色: </label>
+			<div class="formControls col-xs-8 col-sm-6 ">
+				<input type="checkbox" name="role1" id="check1" value="{$role1}" ><label for="check1">报告人</label>&nbsp&nbsp
+				<input type="checkbox" name="role2" id="check2" value="{$role2}" ><label for="check2">专家 </label>&nbsp&nbsp
+				<input type="checkbox" name="role3" id="check3" value="{$role3}"><label for="check3">审核人 </label>&nbsp&nbsp
+				<input type="checkbox" name="role4" id="check4" value="{$role4}"><label for="check4">观察者 </label>&nbsp&nbsp
+			</div>
+		</div>
+
+		<br>
+		<div class="row cl ">
+			<div class="col-xs-5 col-sm-5 col-xs-offset-5 col-sm-offset-5">
+				<input id='btnSubmit' class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;&nbsp;提交修改&nbsp;&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+</article>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="/lib/layer/2.1/layer.js"></script>
+<script type="text/javascript" src="/lib/icheck/jquery.icheck.min.js"></script>
+<script type="text/javascript" src="/lib/jquery.validation/1.14.0/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="/lib/jquery.validation/1.14.0/messages_zh.min.js"></script>
+<script type="text/javascript" src="/static/h-ui/js/H-ui.js"></script>
+<script type="text/javascript" src="/static/h-ui.admin/js/H-ui.admin.js"></script>
+
+<!--/_footer /作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript">
+
+	$(document).ready(function () {
+
+		$('#check1').attr('checked', $('#check1').val()==1?true:false);
+		$('#check2').attr('checked', $('#check2').val()==1?true:false );
+		$('#check3').attr('checked', $('#check3').val()==1?true:false );
+		$('#check4').attr('checked', $('#check4').val()==1?true:false );
+
+
+		$('#check1').on('click',function () {
+			var a = document.getElementById('check1');
+			if(a.checked){
+				a.value = 1;
+			}
+			else{
+				a.value = 0;
+			}
+		});
+
+		$('#check2').on('click',function () {
+			var a = document.getElementById('check2');
+			if(a.checked){
+				a.value = 1;
+			}
+			else{
+				a.value = 0;
+			}
+		});
+
+		$('#check3').on('click',function () {
+			var a = document.getElementById('check3');
+			if(a.checked){
+				a.value = 1;
+			}
+			else{
+				a.value = 0;
+			}
+		});
+
+		$('#check4').on('click',function () {
+			var a = document.getElementById('check4');
+			if(a.checked){
+				a.value = 1;
+			}
+			else{
+				a.value = 0;
+			}
+		});
+
+        $('#imglogo').on('dblclick',function () {
+//            alert($('#imglogo').attr('src'));
+            layer_show('头像',$('#imglogo').attr('src'));
+        });
+
+//        function imglogodbclick() {
+//                alert('dbclick');
+//                layer.open({
+//                    type:2,
+//                    title:'头像',
+//                    area:['600px','600px'],
+//                    url: $('#imglogo').attr('src')
+//
+//                });
+//        }
+
+		
+//		$('#upload').on('click',function () {
+//			var formData = new FormData($('#upFile'));
+//			$.ajax({
+//				url:'/file/upload',
+//				type:'POST',
+//				data:{'image':formData},
+//				async:false,
+//				cache:false,
+//				contentType:false,
+//				processData:false,
+//				success:function (rdata) {
+//					alert(rdata);
+//				},
+//				error:function (rdata) {
+//					alert(rdata);
+//				}
+//			});
+//
+//		});
+//
+
+//		$('#btnSubmit').on('click',function () {
+//			$.post('/hospital/edit_one',
+//					{'hos_no':$('#hos_no').val(),'hos_name':$('#hos_name').val(),'hos_zone':$('#hos_zone').val()},
+//			function (data) {
+////				alert(data);
+//				if(data==0){
+//					var index = parent.layer.getFrameIndex(window.name);
+//					parent.layer.close(index);
+//				}else{
+//					alert('err:'+data);
+//				}
+//			})
+//		});
+
+
+	});
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>
