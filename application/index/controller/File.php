@@ -175,7 +175,7 @@ class File extends \think\Controller
         $flag_index1 =  Request::instance()->param('flag_index1');
         $flag_index2 =  Request::instance()->param('flag_index2');
 
-        $Redata = ['cmd_id' =>18, 'cmd_flag' => 0, 'cmd_data' => ['attest'=>Session::get("attest"),
+        $Redata = ['cmd_id' =>19, 'cmd_flag' => 0, 'cmd_data' => ['attest'=>Session::get("attest"),
             'index'=>intval($index),'flag_index1'=>intval($flag_index1),'flag_index2'=>intval($flag_index2), 'md5_id'=>$md5_id]];
         $ret = Cellserver::postData(json_encode($Redata));
         if ($ret != null) {
