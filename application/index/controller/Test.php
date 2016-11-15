@@ -9,7 +9,9 @@
 namespace app\index\controller;
 
 
+use app\index\cell\Cellfile;
 use app\index\cell\Cellserver;
+use app\index\table\tableBizlog;
 use app\index\table\tableHospital;
 use think\controller\Rest;
 use think\Session;
@@ -27,7 +29,10 @@ class Test extends Rest
     }
 
     public function test() {
-        $data = tableHospital::hos_list();
+//        $time = "2035-12-12 23:59:59 999999";
+//        $limit = 1000;
+//        $data = tableBizlog::getList($time,$limit);
+        $data = tableBizlog::hos_list();
         return $this->response($data,'json',200);
     }
 
@@ -40,13 +45,53 @@ class Test extends Rest
     }
 
     public function bin() {
-//        $file = fopen('/public/logo/f0/a18136d77decf88e5376bd450f3142.jpg','rb');
-//
-//        echo filesize($file);
-//        $readData = fread($file,50);
-//        echo $readData;
+        $filename = './logo/f0/a18136d77decf88e5376bd450f3142.jpg';
+        $file = fopen($filename,'r');
 
-//        fclose($file);
+        $filesize = filesize($filename);
+        $filemd5 =  md5_file($filename);
+
+
+        $ret = Cellfile::upload_file_head($filesize,$filemd5);
+
+        $retD = json_decode($ret,true);
+
+        if( $retD['retCode'] == 0 ) {
+            $blockSize = $retD['block_size'];
+            $num = intval(($filesize+$blockSize-1)/$blockSize);
+            echo '</br>';
+            echo $num;
+            echo '</br>';
+
+            $datalen = $blockSize;
+
+            for($i = 0; $i < $num; $i++) {
+                if( $i + 1 == $num ) {
+                    $datalen = $filesize- ($num-1)*$blockSize;
+                }
+
+                $blockData = fread($file,$datalen);
+
+                $base64Data = base64_encode($blockData);
+                $crc = crc32($base64Data);
+
+                $updataRet= Cellfile::upload_file_data($i,$crc,$blockSize,$datalen,$base64Data,$filemd5,$i+1);
+                echo $updataRet;
+            }
+
+        }
+        else{
+            echo $ret;
+        }
+
+
+//        echo $ret;
+
+//        $readData = fread($file,100);
+//        echo '</br>';
+//        echo base64_encode($readData);
+
+        fclose($file);
 
 
 

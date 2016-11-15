@@ -13,9 +13,9 @@ return [
     // 数据库类型
     'type'           => 'mysql',
     // 服务器地址
-    'hostname'       => '192.9.60.58',
+    'hostname'       => '115.236.177.85',
     // 数据库名
-    'database'       => 'wk_cell',
+    'database'       => 'wk_cell_yiyuan',
     // 用户名
     'username'       => 'admin',
     // 密码

@@ -1,0 +1,199 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>日志列表</title>
+	<link rel="stylesheet" type="text/css" href="/DataTables-1.10.12/media/css/jquery.dataTables.css">
+
+	<link rel="stylesheet" type="text/css" href="/static/h-ui/css/H-ui.min.css" />
+	<link rel="stylesheet" type="text/css" href="/static/h-ui.admin/css/H-ui.admin.css" />
+	<link rel="stylesheet" type="text/css" href="/lib/Hui-iconfont/1.0.7/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="/lib/icheck/icheck.css" />
+	<link rel="stylesheet" type="text/css" href="/static/h-ui.admin/skin/default/skin.css" id="skin" />
+	<link rel="stylesheet" type="text/css" href="/static/h-ui.admin/css/style.css" />
+
+
+	<!-- jQuery -->
+	<script type="text/javascript" charset="utf8" src="/DataTables-1.10.12/media/js/jquery.js"></script>
+	<script type="text/javascript" src="/lib/jquery/1.9.1/jquery.min.js"></script>
+
+	<!-- DataTables -->
+	<script type="text/javascript" charset="utf8" src="/DataTables-1.10.12/media/js/jquery.dataTables.js"></script>
+	<script type="text/javascript" charset="utf8" src="/lib/layer/2.1/layer.js"></script>
+
+	<script type="text/javascript" charset="utf-8" >
+		</script>
+
+
+
+</head>
+<body>
+
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 日志管理 <span class="c-gray en">&gt;</span> 日志列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+
+	<div id="tab_demo" class="HuiTab">
+		<div class="tabBar cl"><span>business服务器</span><span> history服务器</span><span> place服务器</span></div>
+		<div class="tabCon">business</div>
+		<div class="tabCon">history</div>
+		<div class="tabCon">place</div>
+	</div>
+
+	<div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="r">共有数据：<strong><span id="log_count">{$page_num}</span></strong> 条</span>
+	</div>
+
+
+
+	<table id="table_id_example" class="display" class="text-c">
+	<thead>
+	<tr>
+		<th>index_time</th>
+		<th>data</th>
+	</tr>
+	</thead>
+
+</table>
+
+
+</div>
+</body>
+
+<script>
+
+	var table;
+	var log_type='business';
+
+	jQuery.Huitab =function(tabBar,tabCon,class_name,tabEvent,i){
+		var $tab_menu=$(tabBar);
+		// 初始化操作
+		$tab_menu.removeClass(class_name);
+		$(tabBar).eq(i).addClass(class_name);
+		$(tabCon).hide();
+//		$(tabCon).eq(i).show();
+
+		$tab_menu.bind(tabEvent,function(){
+			$tab_menu.removeClass(class_name);
+			$(this).addClass(class_name);
+			var index=$tab_menu.index(this);
+			$(tabCon).hide();
+//			$(tabCon).eq(index).show();
+			if( 'business' === $(tabCon).eq(index).html()) {
+				log_type = 'business';
+			}
+			else if( 'history' === $(tabCon).eq(index).html()) {
+				log_type = 'history';
+			}
+			else if( 'place' === $(tabCon).eq(index).html()) {
+				log_type = 'place';
+			}
+			else {
+				log_type = 'none';
+			}
+//			alert(log_type);
+//			table.ajax.reload();
+			table.ajax.reload(function () {
+				var info = table.page.info();
+				$('#log_count').html(info.recordsTotal);
+			},false);
+		});
+	}
+
+	$(document).ready( function () {
+		table = $('#table_id_example').DataTable({
+//            data: data,
+			//使用对象数组，一定要配置columns，告诉 DataTables 每列对应的属性
+			//data 这里是固定不变的，name，position，salary，office 为你数据里对应的属性
+			ajax: {
+				url:"/log/ajax_list",
+				data: function(d){
+					d.logType = log_type;
+				}
+			},
+			aaSorting: [[ 0, "desc" ]],
+			stateSave: true,//状态保存
+			columns: [
+				{ data: 'index_time' },
+				{ data: 'data' }
+			],
+			language: {
+				'emptyTable': '没有数据',
+				'loadingRecords': '加载中...',
+				'processing': '查询中...',
+				'search': '检索:',
+				'lengthMenu': '每页 _MENU_ 条',
+				'zeroRecords': '没有数据',
+				'paginate': {
+					'first':      '第一页',
+					'last':       '最后一页',
+					'next':       '后一页',
+					'previous':   '前一页'
+				},
+				'info': '第 _PAGE_ 页 / 总 _PAGES_ 页',
+				'infoEmpty': '没有数据',
+				'infoFiltered': '(过滤总件数 _MAX_ 条)'
+			}
+		});
+
+		$('#table_id_example tbody').on( 'click', 'tr', function () {
+			if($(this).hasClass('selected')) {
+				$(this).removeClass('selected');
+			}
+			else{
+				table.$('tr.selected').removeClass('selected');
+				$(this).addClass('selected');
+			}
+		} );
+
+		$('#btnTest').on('click',function () {
+			table.ajax.reload();
+			alert(log_type);
+		});
+
+		$('#table_id_example tbody').on( 'click', 'button', function () {
+			var data= table.row( $(this).parents('tr') ).data();
+			layer.open({
+				type:2,
+				title:'详情',
+				area:['800px','300px'],
+				content:'hospital/edit?'+'hos_num='+data['hospital_number']+'&hos_name='+data['hospital_name']+'&hos_zone='+data['zone']+'&hos_no='+data['hospital_no'],
+				end:function () {
+					table.ajax.reload(null,false);
+				}
+			});
+		} );
+
+		$.Huitab("#tab_demo .tabBar span","#tab_demo .tabCon","current","click","0");
+
+		$('#btnDel').on('click',delRow);
+
+
+		$('#btnAdd').on('click',addRow);
+
+		function delRow() {
+			var rows = table
+					.rows('.selected')
+					.remove()
+					.draw();
+		}
+
+		function addRow() {
+			layer.open({
+				type:2,
+				title:'添加医院',
+				area:['800px','300px'],
+				content:'hospital/add',
+				end:function () {
+					$.get('/hospital/ajax_count',function (data) {
+						$('#hos_count').html(data);
+					});
+					table.ajax.reload();
+				}
+			});
+		}
+
+
+	} );
+</script>
+
+</html>

@@ -16,7 +16,7 @@ use think\View;
 
 class Doctor extends Rest{
 
-    public $url = 'http://192.9.60.58:80/logo/';
+    public $url = 'http://115.236.177.85:8888/logo/';
     public function index() {
         $data = tableHospital::hos_list();
 

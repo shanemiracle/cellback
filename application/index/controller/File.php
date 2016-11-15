@@ -114,7 +114,7 @@ class File extends \think\Controller
 
         $Redata = ['cmd_id' =>16, 'cmd_flag' => 0, 'cmd_data' => ['attest'=>Session::get("attest"),
             'index'=>intval($index),'block_crc'=>intval($block_crc),'block_len'=>intval($block_len),
-            'data_len'=>intval($data_len),'data'=>data,'md5_id'=>$md5_id]];
+            'data_len'=>intval($data_len),'data'=>$data,'md5_id'=>$md5_id]];
         $ret = Cellserver::postData(json_encode($Redata));
         if ($ret != null) {
             $retData = json_decode($ret, true);
