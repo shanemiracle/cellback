@@ -149,10 +149,13 @@ class Device extends Rest
         $hos_no = Request::instance()->param('hos_no');
         $Redata = ['cmd_id' =>8, 'cmd_flag' => 0, 'cmd_data' => ['attest'=>Session::get("attest"),'hospital_no'=>intval($hos_no)]];
         $ret = Cellserver::postData(json_encode($Redata));
+        $data = [];
+//        print $ret;
 
         if( $ret ) {
 
             $getData = json_decode($ret,true);
+//            print_r($getData);
             if($getData['retCode']==0) {
                 $data=['data'=>$getData['data']];
             }
@@ -165,6 +168,6 @@ class Device extends Rest
             $data=['data'=>""];
         }
 
-        return $this->response($data,'json',200);
+        return $this->response($ret,'html',200);
     }
 }

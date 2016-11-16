@@ -15,7 +15,9 @@ class Cellserver
             Cellserver::$ch = curl_init();
         }
 
-        $url = "http://115.236.177.85:8888/".$url;
+//        $url = "http://115.236.177.85:9990/".$url;//product
+        $url = CellConfig::$businessUrl.$url;//test
+
 //        print $url;
         curl_setopt(Cellserver::$ch, CURLOPT_URL, $url);
         curl_setopt(Cellserver::$ch, CURLOPT_HEADER, 0);
@@ -35,7 +37,7 @@ class Cellserver
         if(Cellserver::$ch2==0){
             Cellserver::$ch2 = curl_init();
         }
-        $url = "http://115.236.177.85:8889/".$url;
+        $url = CellConfig::$downloadUrl.$url;
 //        print $url;
         curl_setopt(Cellserver::$ch2, CURLOPT_URL, $url);
         curl_setopt(Cellserver::$ch2, CURLOPT_POST, 1);
@@ -57,7 +59,7 @@ class Cellserver
         if(Cellserver::$ch3==0){
             Cellserver::$ch3 = curl_init();
         }
-        $url = "http://115.236.177.85:8889/".$url;
+        $url = CellConfig::$downloadUrl.$url;
 //        print $url;
         curl_setopt(Cellserver::$ch3, CURLOPT_URL, $url);
         curl_setopt(Cellserver::$ch3, CURLOPT_HEADER, 0);

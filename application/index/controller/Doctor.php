@@ -7,6 +7,7 @@
  */
 namespace app\index\controller;
 
+use app\index\cell\CellConfig;
 use app\index\cell\Cellserver;
 use think\controller\Rest;
 use app\index\table\tableHospital;
@@ -16,7 +17,7 @@ use think\View;
 
 class Doctor extends Rest{
 
-    public $url = 'http://115.236.177.85:8888/logo/';
+
     public function index() {
         $data = tableHospital::hos_list();
 
@@ -46,14 +47,19 @@ class Doctor extends Rest{
         if ($ret != null) {
             $retData = json_decode($ret, true);
             if ($retData && $retData['retCode'] == 0) {
-                $logo = $retData['logo'];
-                if(empty($logo)){
+               // $logo = $retData['logo'];
+               // if(empty($logo))
+                {
+
                     $logo = '/static/h-ui/images/ucnter/avatar.png';
+                    $sign = '/static/h-ui/images/ucnter/avatar.png';
                 }
+
+                $role = $retData['role']==null?0:$retData['role'];
                 $data=['hos_name'=>$hos_name,'doc_name'=>$retData['doctor_name'],'doc_no'=>$retData['doctor_no'],
-                    'pwd'=>$retData['pwd'],'level'=>$retData['level'],'logo'=>$logo,'sign_pic'=>$retData['sign_pic'],'url'=>$this->url,
-                    'mobile'=>$retData['mobile_no'],'doc_ver'=>$retData['doctor_ver'],'role1'=>$retData['role']&1,'role2'=>($retData['role']&2)>>1,
-                    'role3'=>($retData['role']&4)>>2,'role4'=>($retData['role']&8)>>3,'depart'=>$retData['department']];
+                    'pwd'=>$retData['pwd'],'level'=>$retData['level'],'logo'=>$logo,'sign_pic'=>$sign,'url'=>CellConfig::$webUrl,
+                    'mobile'=>$retData['mobile_no'],'doc_ver'=>$retData['doctor_ver'],'role1'=>$role&1,'role2'=>($role&2)>>1,
+                    'role3'=>($role&4)>>2,'role4'=>($role&8)>>3,'depart'=>$retData['department']];
                 return (new View())->fetch('/doctor/edit',$data);
             }
             else if ($retData && $retData['retCode'] == 0x1B) {
@@ -69,6 +75,10 @@ class Doctor extends Rest{
             'pwd'=>'','level'=>'','logo'=>'','sign_pic'=>'',
             'mobile'=>'','doc_ver'=>'','role'=>'',
             'depart'=>''];
+        $data=['hos_name'=>$hos_name,'doc_name'=>'','doc_no'=>'',
+            'pwd'=>'','level'=>'','logo'=>'','sign_pic'=>'','url'=>CellConfig::$webUrl,
+            'mobile'=>'','doc_ver'=>'','role1'=>0,'role2'=>0,
+            'role3'=>0,'role4'=>0,'depart'=>''];
         return (new View())->fetch('/doctor/edit',$data);
     }
 
@@ -181,7 +191,7 @@ class Doctor extends Rest{
             if ($retData && $retData['retCode'] == 0) {
                 $data = ['hos_name'=>$hos_name,'doc_name'=>$doc_name,'doc_no'=>$doc_no,
                     'doc_ver'=>$retData['doctor_ver'],'pwd'=>$pwd,'level'=>$level,'depart'=>$depart,'mobile'=>$mobile,
-                    'logo'=>$logoname,'sign_pic'=>$signname,'url'=>$this->url,
+                    'logo'=>$logoname,'sign_pic'=>$signname,'url'=>CellConfig::$webUrl,
                     'role1'=>$role&1,'role2'=>($role&2)>>1,'role3'=>($role&4)>>2,'role4'=>($role&8)>>3];
                 return view('/doctor/edit',$data);
             }
@@ -245,9 +255,54 @@ class Doctor extends Rest{
 
     }
 
-    public function ajax_list() {
+    public function ajax_all_list() {
         $hos_no = Request::instance()->param('hos_no');
         $Redata = ['cmd_id' =>12, 'cmd_flag' => 0, 'cmd_data' => ['attest'=>Session::get("attest"),'hospital_no'=>intval($hos_no)]];
+        $ret = Cellserver::postData(json_encode($Redata));
+
+        if( $ret ) {
+
+            $getData = json_decode($ret,true);
+            if($getData['retCode']==0) {
+                $data=['data'=>$getData['data']];
+            }
+            else{
+                $data=['data'=>""];
+            }
+
+        }
+        else {
+            $data=['data'=>""];
+        }
+
+        return $this->response($data,'json',200);
+    }
+    public function ajax_list() {
+        $hos_no = Request::instance()->param('hos_no');
+        $Redata = ['cmd_id' =>20, 'cmd_flag' => 0, 'cmd_data' => ['attest'=>Session::get("attest"),'hospital_no'=>intval($hos_no)]];
+        $ret = Cellserver::postData(json_encode($Redata));
+
+        if( $ret ) {
+
+            $getData = json_decode($ret,true);
+            if($getData['retCode']==0) {
+                $data=['data'=>$getData['data']];
+            }
+            else{
+                $data=['data'=>""];
+            }
+
+        }
+        else {
+            $data=['data'=>""];
+        }
+
+        return $this->response($data,'json',200);
+    }
+
+    public function one_info() {
+        $doc_no = Request::instance()->param('doctor_no');
+        $Redata = ['cmd_id' =>21, 'cmd_flag' => 0, 'cmd_data' => ['attest'=>Session::get("attest"),'doctor_no'=>$doc_no]];
         $ret = Cellserver::postData(json_encode($Redata));
 
         if( $ret ) {
