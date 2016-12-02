@@ -10,6 +10,7 @@ namespace app\index\controller;
 
 
 use app\index\table\tableBizlog;
+use app\index\table\tablePlacelog;
 use think\controller\Rest;
 use think\Request;
 use think\View;
@@ -44,6 +45,10 @@ class Log extends Rest
         if( $logType == 'business' ) {
             $data = tableBizlog::hos_list();
         }
+        else if ( $logType == 'place') {
+            $data = tablePlacelog::hos_list();
+        }
+
 
         return $this->response(['data'=>$data],'json',200);
     }
