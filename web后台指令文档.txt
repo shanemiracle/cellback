@@ -158,20 +158,7 @@ role: int
 		ENUM_BUSINESS_RET_CODE_FILE_ERR_NOT_EXIST:2a  md5id不存在
 		ENUM_BUSINESS_RET_CODE_UNKNOWN:1未知错误
 
-//md5文件下载
-1.文件头下载  cmd_id = 18  ENUM_WEB_CMD_WEB_FILE_DOWNLOAD_HEAD
-		传入："attest","md5_id"
-		返回："file_size","block_size","md5_status","flag_index1","flag_index2","create_time"
-		ENUM_BUSINESS_RET_CODE_ATTEST_ERR:6管理员的attest错误，需要重新获取attest
-		ENUM_BUSINESS_RET_CODE_FILE_ERR_NOT_EXIST:2a md5id不存在
-		ENUM_BUSINESS_RET_CODE_UNKNOWN:1未知错误
 
-2.文件data下载  cmd_id = 19  ENUM_WEB_CMD_WEB_FILE_DOWNLOAD_DATA
-		传入："attest","md5_id","index","flag_index1","flag_index2"
-		返回："index","block_crc","data_len","data"
-		ENUM_BUSINESS_RET_CODE_ATTEST_ERR:6管理员的attest错误，需要重新获取attest
-		ENUM_BUSINESS_RET_CODE_FILE_ERR_INDEX:2D index错误
-		ENUM_BUSINESS_RET_CODE_UNKNOWN:1未知错误
 
 
 
